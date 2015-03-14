@@ -1,0 +1,37 @@
+{
+  "name": "nope",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "0.12.x"
+  },
+  "scripts": {
+    "pretest": "scripts/compile.sh",
+    "test": "node_modules/.bin/mocha test/index.coffee --opts test/mocha.opts --recursive",
+    "posttest": "scripts/cleanup.sh",
+    "build": "scripts/compile.sh",
+    "prepublish": "scripts/compile.sh",
+    "postpublish": "scripts/cleanup.sh",
+    "prestart": "scripts/compile.sh",
+    "start": "coffee test/test_server.coffee",
+    "poststart": "scripts/cleanup.sh",
+    "watch": "node_modules/.bin/coffee --watch --output . --bare --compile index.coffee"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mem-fs": "^1.1.0",
+    "mem-fs-editor": "^1.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "devDependencies": {
+    "chai": "*",
+    "coffee-script": "*",
+    "mocha": "*",
+    "should": "*"
+  }
+}
