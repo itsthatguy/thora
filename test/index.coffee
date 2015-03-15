@@ -23,12 +23,12 @@ describe "thora", ->
         expect(fn).to.throw(Error, /Please specify a before or after string/)
 
     context "with good, simple, arguments", ->
+      file = "easy_temp"
 
       beforeEach (done) ->
         store = memFs.create()
         fs = editor.create(store)
 
-        file = "easy_temp"
         fs.copy("./test/app/#{file}.template.rb", "./test/app/#{file}.rb")
         fs.commit -> return done()
 
@@ -37,9 +37,9 @@ describe "thora", ->
       it "inserts after regex", (done) ->
         store = memFs.create()
         fs = editor.create(store)
-        expected = fs.read("./test/app/easy_temp.after.rb")
-        thora.insertIntoFile("./test/app/easy_temp.rb", "\nHello", after: "Second", ->
-          result = fs.read("./test/app/easy_temp.rb")
+        expected = fs.read("./test/app/#{file}.after.rb")
+        thora.insertIntoFile("./test/app/#{file}.rb", "\nHello", after: "Second", ->
+          result = fs.read("./test/app/#{file}.rb")
           expect(expected).to.equal(result)
           fs.commit -> return done()
         )
@@ -47,9 +47,47 @@ describe "thora", ->
       it "inserts before regex", (done) ->
         store = memFs.create()
         fs = editor.create(store)
-        expected = fs.read("./test/app/easy_temp.before.rb")
-        thora.insertIntoFile("./test/app/easy_temp.rb", "Hello\n", before: "Second", ->
-          result = fs.read("./test/app/easy_temp.rb")
+        expected = fs.read("./test/app/#{file}.before.rb")
+        thora.insertIntoFile("./test/app/#{file}.rb", "Hello\n", before: "Second", ->
+          result = fs.read("./test/app/#{file}.rb")
+          expect(expected).to.equal(result)
+          fs.commit -> return done()
+        )
+
+    context "with good, complex, arguments", ->
+      file = "temp"
+
+      beforeEach (done) ->
+        store = memFs.create()
+        fs = editor.create(store)
+
+        fs.copy("./test/app/#{file}.template.rb", "./test/app/#{file}.rb")
+        fs.commit -> return done()
+
+      afterEach -> fs = null
+
+      it "inserts after regex", (done) ->
+        store = memFs.create()
+        fs = editor.create(store)
+
+        inputFile = fs.read("./test/app/input.txt")
+        thora.insertIntoFile("./test/app/#{file}.rb", "\n#{inputFile}", after: "class Application \< Rails::Application", ->
+          expected = fs.read("./test/app/#{file}.after.rb")
+          result = fs.read("./test/app/#{file}.rb")
+
+          expect(expected).to.equal(result)
+          fs.commit -> return done()
+        )
+
+      it "inserts before regex", (done) ->
+        store = memFs.create()
+        fs = editor.create(store)
+
+        inputFile = fs.read("./test/app/input.txt")
+        thora.insertIntoFile("./test/app/#{file}.rb", "\n#{inputFile}\n", before: "^\\s{2}end", ->
+          expected = fs.read("./test/app/#{file}.before.rb")
+          result = fs.read("./test/app/#{file}.rb")
+
           expect(expected).to.equal(result)
           fs.commit -> return done()
         )
