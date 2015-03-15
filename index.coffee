@@ -13,6 +13,6 @@ module.exports =
 
     inputContents = fs.read(file)
     insert = if opts.before then "#{content}$&" else "$&#{content}"
-    inputContents = inputContents.replace(new RegExp("(#{(opts.after || opts.before)})"), insert)
+    inputContents = inputContents.replace(new RegExp("(#{(opts.after || opts.before)})", "m"), insert)
     fs.write(file, inputContents)
     fs.commit -> return callback()
