@@ -20,18 +20,17 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "mem-fs": "^1.1.0",
-    "mem-fs-editor": "^1.2.1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/itsthatguy/thora"
   },
+  "dependencies": {
+    "mem-fs": "^1.1.0",
+    "mem-fs-editor": "^1.2.1"
+  },
   "devDependencies": {
     "chai": "*",
     "coffee-script": "*",
-    "mocha": "*",
-    "should": "*"
+    "mocha": "*"
   }
 }
